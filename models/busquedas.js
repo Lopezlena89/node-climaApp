@@ -9,10 +9,22 @@ class Busquedas{
         //TODO:Leer DB si existe
     }
 
+    get paramsMapbox(){
+        return {
+            'access_token':process.env.MAPBOX_KEY,
+            'limit':5,
+            'language':'es'
+        }
+    }
+
     async ciudad(lugar = ''){
         try {
             //peticion HTTP
-            const resp = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/guadalajara.json?proximity=ip&language=es&access_token=pk.eyJ1IjoibG9wZXpsZW5hIiwiYSI6ImNsamkxcHg5cDBvOHUzcnJ1bDRidmF6eGcifQ.fbua-wSkvSNx2RUVGWjffg');
+            const intance = axios.create({
+                baseURL:`https://api.mapbox.com/`,
+                params:this.paramsMapbox
+            });
+            const resp = await intance.get(`geocoding/v5/mapbox.places/${lugar}.json`);
             console.log(resp.data)
             return[]
             
